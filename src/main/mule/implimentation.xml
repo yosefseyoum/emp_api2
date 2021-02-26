@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<flow name="GetAllEmployee" doc:id="86249969-7d40-4c14-b02e-ef4dd30f4301" >
+		<wsc:consume operation="GetAllEmployees" doc:name="Consume" doc:id="f92d9174-b3eb-4306-bca4-10c55893fbb2" config-ref="Web_Service_Consumer_Config" >
+			<wsc:message >
+				<wsc:body ><![CDATA[#[output application/xml
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#GetAllEmployeesRequest: null
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+	</flow>
+	<flow name="GetEmployeebyIDFlow" doc:id="3c1267a2-de1e-425b-add6-e243c409dd25" >
+		<wsc:consume operation="GetEmployee" doc:name="Consume" doc:id="d1160c0d-810b-451b-821f-a6775637d4e3" config-ref="Web_Service_Consumer_Config" >
+			<wsc:message >
+				<wsc:body ><![CDATA[#[output application/xml
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#GetEmployeeRequest: {
+		ns0#id: vars.id as Number
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+	</flow>
+	<flow name="patchbyID_Flow" doc:id="fdf4ff27-8ebc-4642-af7e-b76574d344c8" >
+		<wsc:consume operation="GetEmployee" doc:name="Consume" doc:id="0df52b4c-af9a-4ca9-91af-23863ab5afc7" config-ref="Web_Service_Consumer_Config" >
+			<wsc:message >
+				<wsc:body ><![CDATA[#[output application/json
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#GetEmployeeRequest: {
+		ns0#id: vars.id as Number
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+	</flow>
+	<flow name="delete_Flow" doc:id="adf2d47e-f4c2-455a-bfea-fb90d0f2080d" >
+		<wsc:consume operation="DeleteEmployee" doc:name="Consume" doc:id="29ebaf71-3c42-4c35-9e85-664d3a967dd1" config-ref="Web_Service_Consumer_Config" >
+			<wsc:message >
+				<wsc:body ><![CDATA[#[output application/xml
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#DeleteEmployeeRequest: {
+		ns0#id: vars.id as Number
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+	</flow>
+	<flow name="AddEmployeeFlow" doc:id="5622a733-dbde-4285-a3e2-54e03ca095a8" >
+		<wsc:consume operation="AddEmployee" doc:name="Consume" doc:id="d6001b2b-cffd-4db7-af3f-fc119f8e73b1" config-ref="Web_Service_Consumer_Config" >
+			<wsc:message >
+				<wsc:body ><![CDATA[#[output application/xml
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#AddEmployeeRequest: {
+		ns0#AddEmployee: {
+			ns0#firstName: null,
+			ns0#lastName: null,
+			ns0#department: null
+		}
+	},
+	ns0#UpdateEmployeeRequest: {
+		ns0#Employee: {
+			ns0#firstName: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#firstName,
+			ns0#lastName: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#lastName,
+			ns0#department: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#department
+		}
+	}
+}]]]></wsc:body>
+			</wsc:message>
+		</wsc:consume>
+	</flow>
+</mule>
