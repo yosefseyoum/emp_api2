@@ -33,7 +33,8 @@ ns ns0 http://www.cdi.com/employees
 	<flow name="patchbyID_Flow" doc:id="fdf4ff27-8ebc-4642-af7e-b76574d344c8" >
 		<wsc:consume doc:name="Consume" doc:id="1e518f25-a461-4e81-8b9f-8fd0a508f841" config-ref="Web_Service_Consumer_Config" operation="UpdateEmployee">
 			<wsc:message >
-				<wsc:body ><![CDATA[#[output application/xml
+				<wsc:body ><![CDATA[#[%dw 2.0
+output application/xml
 ns ns0 http://www.cdi.com/employees
 ---
 {

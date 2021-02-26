@@ -157,7 +157,20 @@ payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
     <flow name="patch:\employees\(id):application\json:emp_ys-config">
 		<ee:transform doc:name="Transform Message" doc:id="c6ae86f7-316d-46a5-bcb9-61d9af1cbc32" >
 			<ee:message >
-				<ee:set-payload ><![CDATA[attributes.uriParams.'id']]></ee:set-payload>
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://www.cdi.com/employees
+---
+{
+	ns0#UpdateEmployeeRequest: {
+		ns0#Employee: {
+			ns0#id: attributes.uriParams.id as Number,
+			ns0#firstName: payload.firstName,
+			ns0#lastName: payload.lastName,
+			ns0#department: payload.department
+		}
+	}
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="Flow Reference" doc:id="b48709aa-631b-4b35-aea1-237d482b34ee" name="patchbyID_Flow"/>
@@ -165,10 +178,14 @@ payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 ns ns0 http://www.cdi.com/employees
-
 output application/json
 ---
-payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
+{
+	firstName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#firstName default "",
+	lastName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#lastName default "",
+	id: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#id,
+	department: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#department default ""
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
     </flow>
