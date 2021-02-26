@@ -129,56 +129,46 @@ output application/json
         </error-handler>
     </flow>
     <flow name="delete:\employees\(id):emp_ys-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-		<flow-ref doc:name="Flow Reference" doc:id="04f0e0b1-94a5-402a-ae4f-08e3be2ef31c" name="delete_Flow"/>
-		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/java
-
----
-{
-  statusCode: "ERROR",
-  message: "Your request has an error"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
-    <flow name="patch:\employees\(id):application\json:emp_ys-config">
-		<ee:transform doc:name="Transform Message" doc:id="11247bcc-4563-4863-9ce2-f5d093dbc7d2" >
+		<ee:transform doc:name="Transform Message" doc:id="3b9c7f90-837a-4595-9155-9cd32e8b6ab4" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
----
-{
-	UpdateEmployeeRequest:{
-		Employee:{ id:attributes.uriParams.id as Number,
-			firstName: payload.firstName,
-			lastName: payload.lastName,
-			department: payload.department
-			
-		}
-	}
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<flow-ref doc:name="Flow Reference" doc:id="2d0ae5dd-d8cb-4114-a1e6-1316fa60d14a" name="patchbyID_Flow"/>
-		<ee:transform doc:name="Transform Message" doc:id="25962cbb-3072-4a83-88c7-06c30a1b1a2c" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
 ns ns0 http://www.cdi.com/employees
 ---
 {
-	firstName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#firstName default "",
-	lastName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#lastName default "",
-	id: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#id,
-	department: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#department default ""
+	ns0#DeleteEmployeeRequest: {
+		ns0#id: attributes.uriParams.id as Number
+}
+
 }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="04f0e0b1-94a5-402a-ae4f-08e3be2ef31c" name="delete_Flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="28d418f3-a28a-4dec-8aef-42afeba1064f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/jSON
+ns ns0 http://www.cdi.com/employees
+---
+payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+    </flow>
+    <flow name="patch:\employees\(id):application\json:emp_ys-config">
+		<ee:transform doc:name="Transform Message" doc:id="c6ae86f7-316d-46a5-bcb9-61d9af1cbc32" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[attributes.uriParams.'id']]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="b48709aa-631b-4b35-aea1-237d482b34ee" name="patchbyID_Flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="60ed0210-7b7a-4c48-8c37-e026ecbed751" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+ns ns0 http://www.cdi.com/employees
+
+output application/json
+---
+payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
     </flow>
@@ -224,10 +214,9 @@ ns ns0 http://www.cdi.com/employees
 		</ee:transform>
     </flow>
     <flow name="post:\employees:application\json:emp_ys-config">
-		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="93966017-bba7-4a96-b849-0ff39d9d6b18">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/xml
+		<ee:transform doc:name="Transform Message" doc:id="b0f73f70-e9db-4df9-9050-c5d80f4819e2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[output application/xml
 ns ns0 http://www.cdi.com/employees
 ---
 {
@@ -239,21 +228,16 @@ ns ns0 http://www.cdi.com/employees
 		}
 	}
 }]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-		<flow-ref doc:name="Flow Reference" doc:id="303d8efa-e410-49d7-8204-86f1c2d94c7e" name="AddEmployeeFlow"/>
-		<ee:transform doc:name="Transform Message" doc:id="ce97640c-1a19-4987-b197-676a08fea799" >
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Flow Reference" doc:id="fec1d30e-6519-4d98-a6bb-8f5c60cad8e9" name="AddEmployeeFlow"/>
+		<ee:transform doc:name="Transform Message" doc:id="2d427d23-0277-4b6d-b7f8-ffa000b9946f" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ns ns0 http://www.cdi.com/employees
 ---
-[{
-	firstName: payload.body.ns0#AddEmployeeResponse.ns0#Employee.ns0#firstName default "",
-	lastName: payload.body.ns0#AddEmployeeResponse.ns0#Employee.ns0#lastName default "",
-	id: payload.body.ns0#AddEmployeeResponse.ns0#Employee.ns0#id,
-	department: payload.body.ns0#AddEmployeeResponse.ns0#Employee.ns0#department default ""
-}]]]></ee:set-payload>
+[payload.body.ns0#AddEmployeeResponse.ns0#Employee]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
     </flow>

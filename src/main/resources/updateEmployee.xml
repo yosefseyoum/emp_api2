@@ -1,0 +1,10 @@
+ <emp:UpdateEmployeeRequest xmlns:emp="http://www.cdi.com/employees">
+         <emp:Employee>
+            <emp:id>?</emp:id>
+            <emp:firstName>#[attributes.queryParams.firstName]</emp:firstName>
+            <emp:lastName>#[attributes.queryParams.lastName]</emp:lastName>
+            <emp:department>#[attributes.queryParams.department]</emp:department>
+         </emp:Employee>
+      </emp:UpdateEmployeeRequest>
+
+ 

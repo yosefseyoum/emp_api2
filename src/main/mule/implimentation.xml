@@ -31,56 +31,40 @@ ns ns0 http://www.cdi.com/employees
 		</wsc:consume>
 	</flow>
 	<flow name="patchbyID_Flow" doc:id="fdf4ff27-8ebc-4642-af7e-b76574d344c8" >
-		<wsc:consume operation="GetEmployee" doc:name="Consume" doc:id="0df52b4c-af9a-4ca9-91af-23863ab5afc7" config-ref="Web_Service_Consumer_Config" >
+		<wsc:consume doc:name="Consume" doc:id="1e518f25-a461-4e81-8b9f-8fd0a508f841" config-ref="Web_Service_Consumer_Config" operation="UpdateEmployee">
 			<wsc:message >
-				<wsc:body ><![CDATA[#[output application/json
+				<wsc:body ><![CDATA[#[output application/xml
 ns ns0 http://www.cdi.com/employees
 ---
 {
-	ns0#GetEmployeeRequest: {
-		ns0#id: vars.id as Number
+	ns0#UpdateEmployeeRequest: {
+		ns0#Employee: {
+			ns0#id: payload.ns0#UpdateEmployeeRequest.ns0#Employee.ns0#id as Number,
+			ns0#firstName: payload.ns0#UpdateEmployeeRequest.ns0#Employee.ns0#firstName,
+			ns0#lastName: payload.ns0#UpdateEmployeeRequest.ns0#Employee.ns0#lastName,
+			ns0#department: payload.ns0#UpdateEmployeeRequest.ns0#Employee.ns0#department
+		}
 	}
 }]]]></wsc:body>
 			</wsc:message>
 		</wsc:consume>
 	</flow>
 	<flow name="delete_Flow" doc:id="adf2d47e-f4c2-455a-bfea-fb90d0f2080d" >
-		<wsc:consume operation="DeleteEmployee" doc:name="Consume" doc:id="29ebaf71-3c42-4c35-9e85-664d3a967dd1" config-ref="Web_Service_Consumer_Config" >
+		<wsc:consume operation="DeleteEmployee" doc:name="Consume" doc:id="fedf6005-f531-40ac-8d40-8790cebb00eb" config-ref="Web_Service_Consumer_Config">
 			<wsc:message >
 				<wsc:body ><![CDATA[#[output application/xml
 ns ns0 http://www.cdi.com/employees
 ---
 {
 	ns0#DeleteEmployeeRequest: {
-		ns0#id: vars.id as Number
+		ns0#id: payload.DeleteEmployeeRequest.ns0#id
 	}
 }]]]></wsc:body>
 			</wsc:message>
 		</wsc:consume>
 	</flow>
 	<flow name="AddEmployeeFlow" doc:id="5622a733-dbde-4285-a3e2-54e03ca095a8" >
-		<wsc:consume operation="AddEmployee" doc:name="Consume" doc:id="d6001b2b-cffd-4db7-af3f-fc119f8e73b1" config-ref="Web_Service_Consumer_Config" >
-			<wsc:message >
-				<wsc:body ><![CDATA[#[output application/xml
-ns ns0 http://www.cdi.com/employees
----
-{
-	ns0#AddEmployeeRequest: {
-		ns0#AddEmployee: {
-			ns0#firstName: null,
-			ns0#lastName: null,
-			ns0#department: null
-		}
-	},
-	ns0#UpdateEmployeeRequest: {
-		ns0#Employee: {
-			ns0#firstName: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#firstName,
-			ns0#lastName: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#lastName,
-			ns0#department: payload.ns0#AddEmployeeRequest.ns0#AddEmployee.ns0#department
-		}
-	}
-}]]]></wsc:body>
-			</wsc:message>
+		<wsc:consume operation="AddEmployee" doc:name="Consume" doc:id="0ef60cae-ab0d-4142-8b2f-efe91133d3d1" config-ref="Web_Service_Consumer_Config">
 		</wsc:consume>
 	</flow>
 </mule>
