@@ -196,9 +196,9 @@ ns ns0 http://www.cdi.com/employees
 output application/json
 ---
 {
+	id: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#id,
 	firstName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#firstName,
 	lastName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#lastName,
-	id: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#id,
 	department: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#department
 }]]></ee:set-payload>
 			</ee:message>
@@ -213,9 +213,9 @@ output application/json
 ns ns0 http://www.cdi.com/employees
 ---
 payload.body.ns0#GetAllEmployeesResponse.*ns0#Employees map ( employee , indexOfEmployee ) -> {
+	id: employee.ns0#id default 0,
 	firstName: employee.ns0#firstName default "",
 	lastName: employee.ns0#lastName default "",
-	id: employee.ns0#id default 0,
 	department: employee.ns0#department default ""
 }
 ]]></ee:set-payload>
@@ -236,9 +236,9 @@ output application/json
 ns ns0 http://www.cdi.com/employees
 ---
 {
+	id: payload.body.ns0#GetEmployeeResponse.ns0#Employee.ns0#id,
 	firstName: payload.body.ns0#GetEmployeeResponse.ns0#Employee.ns0#firstName default "",
 	lastName: payload.body.ns0#GetEmployeeResponse.ns0#Employee.ns0#lastName default "",
-	id: payload.body.ns0#GetEmployeeResponse.ns0#Employee.ns0#id,
 	department: payload.body.ns0#GetEmployeeResponse.ns0#Employee.ns0#department default ""
 }
 ]]></ee:set-payload>
