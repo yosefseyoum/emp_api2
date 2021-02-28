@@ -1,0 +1,6 @@
+wsdl:
+  wsdllocation : http://34.86.63.32:6063/ws/employees.wsdl
+  service : EmployeePortService
+  port : EmployeePortSoap11
+  address : http://34.86.63.32:6063/ws
+  

@@ -151,7 +151,7 @@ ns ns0 http://www.cdi.com/employees
 output application/jSON
 ns ns0 http://www.cdi.com/employees
 ---
-{message: "Deleted" }]]></ee:set-payload>
+ "Deleted"]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<error-handler>
