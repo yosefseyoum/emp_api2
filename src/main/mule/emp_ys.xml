@@ -7,8 +7,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
     </http:listener-config>
     <apikit:config name="emp_ys-config" api="resource::e1715fb8-6b3d-46c3-a0ae-187bf4720706:emp_ys:1.0.3:raml:zip:emp_ys.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="86221ce6-182d-44c4-8c02-902039083ed4" >
-		<wsc:connection wsdlLocation="http://34.86.63.32:6061/ws/employees.wsdl" service="EmployeePortService" port="EmployeePortSoap11" address="http://34.86.63.32:6061/ws" />
+		<wsc:connection wsdlLocation="${wsdl.wsdllocation}" service="${wsdl.service}" port="${wsdl.port}" address="${wsdl.address}" />
 	</wsc:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="aaa8e42a-0a57-46a6-9438-11f44b2c053a" file="soap-${env}.yaml" />
 	<flow name="emp_ys-main">
         <http:listener config-ref="emp_ys-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -271,8 +272,8 @@ ns ns0 http://www.cdi.com/employees
 			ns0#lastName: payload.lastName,
 			ns0#department: payload.department
 		}
-	}
-}]]></ee:set-payload>
+		}
+	}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="Flow Reference" doc:id="fec1d30e-6519-4d98-a6bb-8f5c60cad8e9" name="AddEmployeeFlow"/>
