@@ -1,29 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
-  <types:catalog>
-    <types:type name="output" format="xml">
-      <types:example format="xml" element="{http://www.cdi.com/employees}UpdateEmployeeRequest" location="updateEmployee.xml"/>
-    </types:type>
-    <types:type name="input" format="xml">
-      <types:example format="xml" element="{http://www.cdi.com/employees}UpdateEmployeeRequest" location="updateEmployee.xml"/>
-    </types:type>
-  </types:catalog>
-  <types:enrichment select="#c6ae86f7-316d-46a5-bcb9-61d9af1cbc32">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="output"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
-  <types:enrichment select="#1e518f25-a461-4e81-8b9f-8fd0a508f841">
-    <types:processor-declaration>
-      <types:input-event>
-        <types:message>
-          <types:payload type="input"/>
-        </types:message>
-      </types:input-event>
-    </types:processor-declaration>
-  </types:enrichment>
+  <types:catalog/>
 </types:mule>

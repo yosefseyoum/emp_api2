@@ -150,9 +150,23 @@ ns ns0 http://www.cdi.com/employees
 output application/jSON
 ns ns0 http://www.cdi.com/employees
 ---
-payload.body.ns0#DeleteEmployeeResponse]]></ee:set-payload>
+{message: "Deleted" }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="3310fc49-9dfc-401d-ab02-20b670804f81" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="620db45c-64dd-44d8-80e2-5724fdda65c6" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+"Resource not found"
+]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
     </flow>
     <flow name="patch:\employees\(id):application\json:emp_ys-config">
 		<ee:transform doc:name="Transform Message" doc:id="c6ae86f7-316d-46a5-bcb9-61d9af1cbc32" >
@@ -174,17 +188,17 @@ ns ns0 http://www.cdi.com/employees
 			</ee:message>
 		</ee:transform>
 		<flow-ref doc:name="Flow Reference" doc:id="b48709aa-631b-4b35-aea1-237d482b34ee" name="patchbyID_Flow"/>
-		<ee:transform doc:name="Transform Message" doc:id="60ed0210-7b7a-4c48-8c37-e026ecbed751" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Transform Message" doc:id="60ed0210-7b7a-4c48-8c37-e026ecbed751">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 ns ns0 http://www.cdi.com/employees
 output application/json
 ---
 {
-	firstName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#firstName default "",
-	lastName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#lastName default "",
+	firstName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#firstName,
+	lastName: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#lastName,
 	id: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#id,
-	department: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#department default ""
+	department: payload.body.ns0#UpdateEmployeeResponse.ns0#Employee.ns0#department
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
@@ -207,7 +221,7 @@ payload.body.ns0#GetAllEmployeesResponse.*ns0#Employees map ( employee , indexOf
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="get:\employees\(id):emp_ys-config">
+	<flow name="get:\employees\(id):emp_ys-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" doc:id="1f01f0d1-f646-44d2-81a2-1bf064c34b60">
             <ee:variables>
                 <ee:set-variable variableName="id"><![CDATA[attributes.uriParams.'id']]></ee:set-variable>
@@ -229,6 +243,20 @@ ns ns0 http://www.cdi.com/employees
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1faefce5-5e2d-424c-a025-d53b87b20b88" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="7546095a-d3c6-4549-8d23-6a4793bf1425">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+
+"id doesn't exist"
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</on-error-propagate>
+		</error-handler>
     </flow>
     <flow name="post:\employees:application\json:emp_ys-config">
 		<ee:transform doc:name="Transform Message" doc:id="b0f73f70-e9db-4df9-9050-c5d80f4819e2" >
