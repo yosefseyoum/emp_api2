@@ -3,13 +3,14 @@
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <http:listener-config name="emp_ys-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081" />
+        <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
     <apikit:config name="emp_ys-config" api="resource::e1715fb8-6b3d-46c3-a0ae-187bf4720706:emp_ys:1.0.3:raml:zip:emp_ys.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="86221ce6-182d-44c4-8c02-902039083ed4" >
 		<wsc:connection wsdlLocation="${wsdl.wsdllocation}" service="${wsdl.service}" port="${wsdl.port}" address="${wsdl.address}" />
 	</wsc:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="aaa8e42a-0a57-46a6-9438-11f44b2c053a" file="soap-${env}.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="8b98154c-069b-4d9e-b741-26dc9f88fc62" file="http.yaml" />
 	<flow name="emp_ys-main">
         <http:listener config-ref="emp_ys-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
